@@ -6,47 +6,54 @@ if (localStorage.getItem('usuario_logado') !== 'true') {
 
 // --- CONFIGURAÇÃO E CRONOGRAMA DINÂMICO ---
 const SEMANA_INICIO = 15;
-let SEMANA_FIM = 20; // Altera dinamicamente entre 20 e 21
+let SEMANA_FIM = 20; 
 const STORAGE_KEY = 'portfolio_disciplinas_dados';
 
 const urlParams = new URLSearchParams(window.location.search);
 let MODO_PROFESSOR = urlParams.get('modo') === 'professor';
 
-// Define Inteligência Artificial como a matéria inicial padrão do sistema
 let materiaAtual = 'Inteligência Artificial';
+
+// Inicia o sistema com um objeto de dados limpo na memória RAM
 let dadosPortfolio = carregarDadosIniciais();
 
 // --- 1. INICIALIZAÇÃO DO SISTEMA ---
 document.addEventListener('DOMContentLoaded', () => {
     injetarEstilosModal(); 
-    atualizarLimiteSemanas(); // Avalia se a matéria inicial vai até a semana 20 ou 21
+    atualizarLimiteSemanas(); 
     atualizarInterfaceModo();
     configurarMenuLateral();
     renderizarSemanas();
-    configurarBotaoBackup(); // Ativa os ouvintes dos botões de exportação e importação
+    configurarBotaoBackup(); 
 });
 
 function carregarDadosIniciais() {
     const salvos = localStorage.getItem(STORAGE_KEY);
-    return salvos ? JSON.parse(salvos) : {};
+    // Se o que estiver salvo no localStorage for válido e leve, carrega. Se não, inicia vazio.
+    try {
+        return salvos ? JSON.parse(salvos) : {};
+    } catch(e) {
+        return {};
+    }
 }
 
 function salvarNoStorage() {
     try {
+        // Tenta salvar no storage apenas se os dados forem pequenos (< 5MB)
         localStorage.setItem(STORAGE_KEY, JSON.stringify(dadosPortfolio));
     } catch (e) {
-        alert("Erro: O limite de armazenamento do navegador foi excedido! Remova arquivos grandes ou backups antigos.");
+        // Ignora silenciosamente o erro do localStorage para não travar a aplicação na tela.
+        // O usuário usará o botão "Exportar Backup" para salvar os arquivos de forma persistente.
+        console.warn("Aviso: Limite do navegador excedido. Lembre-se de clicar em 'Exportar Backup' antes de fechar a página.");
     }
 }
 
-// DEFINE SE O CRONOGRAMA VAI ATÉ A SEMANA 20 OU 21 DE ACORDO COM A MATÉRIA ATIVA
 function atualizarLimiteSemanas() {
     const nomeMateria = materiaAtual.toLowerCase();
-    
     if (nomeMateria.includes('inteligência') || nomeMateria.includes('ia') || nomeMateria.includes('versionamento')) {
         SEMANA_FIM = 20;
     } else {
-        SEMANA_FIM = 21; // Banco de Dados e outras matérias estendem até a 21
+        SEMANA_FIM = 21; 
     }
 }
 
@@ -95,8 +102,8 @@ function configurarMenuLateral() {
             
             materiaAtual = botaoAlvo.getAttribute('data-materia');
             
-            atualizarLimiteSemanas(); // Atualiza a trava (20 ou 21) antes de renderizar
-            atualizarInterfaceModo(); // Atualiza os textos do cabeçalho informativo
+            atualizarLimiteSemanas(); 
+            atualizarInterfaceModo(); 
             renderizarSemanas();
         });
     });
@@ -124,7 +131,6 @@ function renderizarSemanas() {
         const card = document.createElement('div');
         card.className = 'card';
         
-        // Mapeia e renderiza a lista de múltiplos arquivos anexados na semana
         let htmlAnexo = '';
         if (temArquivos) {
             htmlAnexo = registro.arquivos.map((arq, index) => `
@@ -193,7 +199,7 @@ function editarSemana(numeroSemana) {
     modal.innerHTML = `
         <div class="custom-modal-box">
             <h3>Digite o registro para a Semana ${numeroSemana}:</h3>
-            <textarea id="modal-textarea-texto" placeholder="Cole ou digite seu texto aqui... Use Enter para quebrar linhas.">${textoAtual}</textarea>
+            <textarea id="modal-textarea-texto" placeholder="Cole ou digite seu texto aqui...">${textoAtual}</textarea>
             <div class="custom-modal-buttons">
                 <button class="modal-btn-cancelar" id="modal-btn-cancelar">Cancelar</button>
                 <button class="modal-btn-salvar" id="modal-btn-salvar">OK</button>
@@ -207,11 +213,8 @@ function editarSemana(numeroSemana) {
     textarea.setSelectionRange(textarea.value.length, textarea.value.length);
 
     document.getElementById('modal-btn-salvar').addEventListener('click', () => {
-        const novoTexto = textarea.value;
-        if (!dadosPortfolio[materiaAtual][chaveSemana]) {
-            dadosPortfolio[materiaAtual][chaveSemana] = { texto: "", arquivos: [] };
-        }
-        dadosPortfolio[materiaAtual][chaveSemana].texto = novoTexto.trim();
+        if (!dadosPortfolio[materiaAtual][chaveSemana]) dadosPortfolio[materiaAtual][chaveSemana] = { texto: "", arquivos: [] };
+        dadosPortfolio[materiaAtual][chaveSemana].texto = textarea.value.trim();
         salvarNoStorage();
         renderizarSemanas();
         modal.remove();
@@ -231,7 +234,7 @@ function adicionarAnexo(event, numeroSemana) {
     if (!dadosPortfolio[materiaAtual][chaveSemana].arquivos) dadosPortfolio[materiaAtual][chaveSemana].arquivos = [];
 
     Array.from(arquivosSelecionados).forEach(arquivo => {
-        // CORREÇÃO SOLICITADA: Limite estendido para 100MB (104857600 bytes)
+        // Validador estendido para arquivos pesados de até 100MB
         if (arquivo.size > 104857600) {
             alert(`O arquivo "${arquivo.name}" é muito grande! Limite de até 100MB.`);
             return;
@@ -251,11 +254,9 @@ function excluirAnexo(numeroSemana, indiceArquivo) {
     if (MODO_PROFESSOR) return;
     const chaveSemana = `semana_${numeroSemana}`;
     if (dadosPortfolio[materiaAtual][chaveSemana] && dadosPortfolio[materiaAtual][chaveSemana].arquivos) {
-        if (confirm("Tem certeza que deseja remover este anexo específico?")) {
-            dadosPortfolio[materiaAtual][chaveSemana].arquivos.splice(indiceArquivo, 1);
-            salvarNoStorage();
-            renderizarSemanas();
-        }
+        dadosPortfolio[materiaAtual][chaveSemana].arquivos.splice(indiceArquivo, 1);
+        salvarNoStorage();
+        renderizarSemanas();
     }
 }
 
@@ -297,13 +298,15 @@ function configurarBotaoBackup() {
 }
 
 function exportarBackup() {
-    const dados = localStorage.getItem(STORAGE_KEY);
-    if (!dados || dados === '{}') { alert("Não existem registros cadastrados para exportar!"); return; }
-    const blob = new Blob([dados], { type: 'application/json' });
+    if (!dadosPortfolio || Object.keys(dadosPortfolio).length === 0) { 
+        alert("Não existem registros cadastrados na sessão para exportar!"); 
+        return; 
+    }
+    const blob = new Blob([JSON.stringify(dadosPortfolio)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `backup_portfolio_disciplinas.json`;
+    link.download = `portfolio_completo_nycollas.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -318,15 +321,14 @@ function importarBackup(event) {
     leitor.onload = function(e) {
         try {
             const dadosImportados = JSON.parse(e.target.result);
-            if (confirm("Atenção: Importar este arquivo substituirá as suas anotações atuais nesta sessão. Deseja continuar?")) {
+            if (confirm("Importar este arquivo substituirá a visualização da tela atual. Continuar?")) {
                 dadosPortfolio = dadosImportados;
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dadosPortfolio));
                 atualizarLimiteSemanas();
                 renderizarSemanas();
-                alert("Backup importado com sucesso!");
+                alert("Dados de grande porte carregados com sucesso na sessão atual!");
             }
         } catch (erro) {
-            alert("Erro: O arquivo selecionado é inválido ou não corresponde ao padrão esperado.");
+            alert("Erro: O arquivo selecionado é inválido.");
         }
     };
     leitor.readAsText(arquivo);
