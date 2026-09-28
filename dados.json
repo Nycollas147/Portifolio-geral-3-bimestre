@@ -1,0 +1,72 @@
+{
+  "aluno": {
+    "nome": "Nycollas",
+    "ra": "1127204804SP"
+  },
+  "disciplinas": {
+    "Front-End": {
+      "semana_15": "",
+      "semana_16": "",
+      "semana_17": "",
+      "semana_18": "",
+      "semana_19": "",
+      "semana_20": "",
+      "semana_21": ""
+    },
+    "Back-End": {
+      "semana_15": "",
+      "semana_16": "",
+      "semana_17": "",
+      "semana_18": "",
+      "semana_19": "",
+      "semana_20": "",
+      "semana_21": ""
+    },
+    "Modelagem de Dados": {
+      "semana_15": "",
+      "semana_16": "",
+      "semana_17": "",
+      "semana_18": "",
+      "semana_19": "",
+      "semana_20": "",
+      "semana_21": ""
+    },
+    "Versionamento & Mensageria": {
+      "semana_15": "",
+      "semana_16": "",
+      "semana_17": "",
+      "semana_18": "",
+      "semana_19": "",
+      "semana_20": "",
+      "semana_21": ""
+    },
+    "Inteligência Artificial": {
+      "semana_15": "",
+      "semana_16": "",
+      "semana_17": "",
+      "semana_18": "",
+      "semana_19": "",
+      "semana_20": "",
+      "semana_21": ""
+    },
+    "Projeto Multidisciplinar": {
+      "semana_15": "",
+      "semana_16": "",
+      "semana_17": "",
+      "semana_18": "",
+      "semana_19": "",
+      "semana_20": "",
+      "semana_21": ""
+    },
+    "Programação Mobile": {
+      "semana_15": "",
+      "semana_16": "",
+      "semana_17": "",
+      "semana_18": "",
+      "semana_19": "",
+      "semana_20": "",
+      "semana_21": ""
+    }
+  }
+}
+

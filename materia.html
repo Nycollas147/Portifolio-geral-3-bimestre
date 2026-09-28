@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio de Disciplinas</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            background-color: #f8fafc;
+            color: #334155;
+            min-height: 100vh;
+        }
+        /* Barra Lateral */
+        aside {
+            width: 280px;
+            background: white;
+            padding: 24px 16px;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .sidebar-top {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .perfil {
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid #f1f5f9;
+        }
+        .perfil h3 {
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .perfil span {
+            font-size: 12px;
+            color: #64748b;
+        }
+        .label-secao {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-left: 8px;
+            letter-spacing: 0.5px;
+        }
+        .menu-item {
+            display: block;
+            padding: 12px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #64748b;
+            margin-bottom: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .menu-item:hover {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        .menu-item.ativo {
+            background-color: #eef2ff;
+            color: #4f46e5;
+            font-weight: 600;
+        }
+        /* Gerenciamento de Dados */
+        .gerenciamento-dados {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        .btn-gerenciamento {
+            display: block;
+            width: 100%;
+            padding: 11px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-visualizar {
+            background: #f5f3ff;
+            border: 1px solid #ddd6fe;
+            color: #6d28d9;
+        }
+        .btn-visualizar:hover {
+            background: #ede9fe;
+        }
+        .btn-visualizar.ativo-prof {
+            background: #312e81;
+            border-color: #312e81;
+            color: white;
+        }
+        .btn-backup {
+            background: white;
+            border: 1px solid #cbd5e1;
+            color: #1e293b;
+        }
+        .btn-backup:hover {
+            background: #f8fafc;
+        }
+        .btn-importar {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+        }
+        .btn-importar:hover {
+            background: #dcfce7;
+        }
+        .btn-sair {
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            color: #dc2626;
+            margin-top: 12px;
+            display: block;
+            box-sizing: border-box;
+        }
+        .btn-sair:hover {
+            background: #fee2e2;
+        }
+        /* Conteúdo Principal */
+        main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+        .cronograma-texto {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 24px;
+            transition: color 0.2s ease;
+        }
+        /* Grid de Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        @media (max-width: 1200px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .cards-grid { grid-template-columns: 1fr; } }
+
+        .card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 200px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .card-title {
+            font-size: 16px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+        .badge {
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .badge.atual {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .badge.vazio {
+            background: #f1f5f9;
+            color: #94a3b8;
+        }
+        .card-body {
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 16px;
+            flex-grow: 1;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .card-body.text-vazio {
+            color: #94a3b8;
+            font-style: italic;
+        }
+        /* Caixinha do Anexo */
+        .anexo-box {
+            margin-top: 14px;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+        /* Ações dos Cards */
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px dashed #f1f5f9;
+        }
+        .btn-acao {
+            flex: 1;
+            background: white;
+            border: 1px solid #cbd5e1;
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #334155;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .btn-acao:hover {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+        .btn-excluir {
+            color: #ef4444;
+            border-color: #fca5a5;
+        }
+        .btn-excluir:hover {
+            background: #fef2f2;
+            border-color: #f87171;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside>
+        <div class="sidebar-top">
+            <div class="perfil">
+                <h3 id="nome-aluno">Nycollas</h3>
+                <span>R.A.: 1127204804SP</span>
+            </div>
+            <span class="label-secao">Disciplinas</span>
+            <nav class="menu-disciplinas" id="lista-disciplinas">
+                <a class="menu-item ativo" data-materia="Front-End">Front-End</a>
+                <a class="menu-item" data-materia="Back-End">Back-End</a>
+                <a class="menu-item" data-materia="Modelagem de Dados">Modelagem de Dados</a>
+                <a class="menu-item" data-materia="Versionamento &amp; Mensageria">Versionamento &amp; Mensageria</a>
+                <a class="menu-item" data-materia="Inteligência Artificial">Inteligência Artificial</a>
+                <a class="menu-item" data-materia="Projeto Multidisciplinar">Projeto Multidisciplinar</a>
+                <a class="menu-item" data-materia="Programação Mobile">Programação Mobile</a>
+            </nav>
+        </div>
+
+        <!-- SEÇÃO: GERENCIAMENTO DE DADOS -->
+        <div class="gerenciamento-dados">
+            <span class="label-secao">Acesso &amp; Segurança</span>
+            
+            <button id="btn-alternar-modo" class="btn-gerenciamento btn-visualizar" onclick="alternarModoVisualizacao()">
+                Visualizar como Professor
+            </button>
+            
+            <div id="controles-aluno">
+                <button class="btn-gerenciamento btn-backup" onclick="exportarBackupJson()">Exportar Backup</button>
+                <button class="btn-gerenciamento btn-importar" onclick="document.getElementById('input-arquivo').click()">Importar Backup</button>
+                <input type="file" id="input-arquivo" style="display: none;" accept=".json" onchange="importarBackupJson(event)">
+            </div>
+            
+            <a href="login.html" class="btn-gerenciamento btn-sair">Sair do Sistema</a>
+        </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+        <p class="cronograma-texto">Cronograma da Atividade:</p>
+        <div class="cards-grid" id="container-semanas">
+            <!-- Gerenciado via script.js -->
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

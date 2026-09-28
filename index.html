@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio Acadêmico - Cronograma</title>
+    <!-- Vinculando o arquivo de estilos do projeto -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container" style="display: flex; min-height: 100vh; font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0;">
+        
+        <!-- --- 1. MENU LATERAL (DISCIPLINAS ATUALIZADAS E BLOCOS DE BACKUP) --- -->
+        <aside class="sidebar" style="width: 280px; background-color: #1c2d42; color: #ffffff; padding: 20px; box-sizing: border-box; flex-shrink: 0; display: flex; flex-direction: column; justify-content: space-between;">
+            
+            <div>
+                <h2 style="font-size: 18px; margin-top: 0; margin-bottom: 25px; border-bottom: 1px solid #2b435f; padding-bottom: 10px;">Disciplinas</h2>
+                <nav class="menu-navegacao" style="display: flex; flex-direction: column; gap: 8px;">
+                    <!-- O script.js monitora a classe 'menu-item' e o atributo 'data-materia' -->
+                    <button class="menu-item ativo" data-materia="Modelagem e Desenvolvimento de Banco de Dados">Modelagem e Desenvolvimento de Banco de Dados</button>
+                    <button class="menu-item" data-materia="Inteligência Artificial">Inteligência Artificial</button>
+                    <button class="menu-item" data-materia="Programação Back-End">Programação Back-End</button>
+                    <button class="menu-item" data-materia="Programação Front-End">Programação Front-End</button>
+                    <button class="menu-item" data-materia="Programação Mobile">Programação Mobile</button>
+                    <button class="menu-item" data-materia="Projeto Multidisciplinar em Desenvolvimento de Sistemas">Projeto Multidisciplinar em Desenvolvimento de Sistemas</button>
+                    <button class="menu-item" data-materia="Versionamento de Código e Sistemas de Mensageria">Versionamento de Código e Sistemas de Mensageria</button>
+                </nav>
+            </div>
+
+            <!-- SEÇÃO DE GERENCIAMENTO DE DATA / BACKUPS -->
+            <div class="gerenciamento-dados" style="margin-top: 30px; border-top: 1px solid #2b435f; padding-top: 20px;">
+                <span style="font-size: 11px; font-weight: bold; color: #94a3b8; letter-spacing: 1px; display: block; margin-bottom: 15px;">GERENCIAMENTO DE DADOS</span>
+                
+                <button class="btn-backup btn-exportar" onclick="exportarBackup()">Exportar Backup</button>
+                
+                <button class="btn-backup btn-importar" onclick="document.getElementById('input-backup').click()">Importar Backup</button>
+                <input type="file" id="input-backup" style="display: none;" accept=".json" onchange="importarBackup(event)">
+                
+                <button class="btn-backup btn-sair" onclick="sairDoSistema()">Sair do Sistema</button>
+            </div>
+            
+        </aside>
+
+        <!-- --- 2. CONTEÚDO PRINCIPAL --- -->
+        <main class="content" style="flex: 1; padding: 40px; box-sizing: border-box; overflow-x: hidden;">
+            
+            <!-- Cabeçalho Dinâmico com Identificação do Aluno -->
+            <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
+                <div>
+                    <h1 style="color: #1c2d42; margin: 0 0 5px 0; font-size: 28px;">Painel de Evolução</h1>
+                    <!-- Identificação do Aluno Josué -->
+                    <div style="font-size: 14px; color: #475569; margin-bottom: 10px; background-color: #f1f5f9; padding: 6px 12px; border-radius: 6px; display: inline-block; border: 1px solid #e2e8f0;">
+                        Aluno: <strong>Josué</strong> | R.A.: <strong>1127204804 SP</strong>
+                    </div>
+                    <!-- O script.js injeta o texto de semanas de forma dinâmica aqui dentro -->
+                    <p class="cronograma-texto" style="margin: 0; color: #64748b; font-size: 15px;"></p>
+                </div>
+
+                <!-- Botão de alternância Aluno/Professor gerenciado pelo script.js -->
+                <button id="btn-alternar-modo" onclick="alternarModoVisualizacao()">
+                    Visualizar como Professor
+                </button>
+            </header>
+
+            <!-- Bloco de avisos ou controles adicionais do Aluno -->
+            <div id="controles-aluno">
+                <strong>Area do Aluno:</strong> Voce pode adicionar suas anotações em formato de texto e anexar seus arquivos de atividades (limite de 10MB por arquivo).
+            </div>
+
+            <!-- --- 3. GRADE DE SEMANAS (RENDERIZADA DYNAMICAMENTE DE 15 A 21 PELO JS) --- -->
+            <div id="container-semanas">
+                <!-- Os cards estruturados aparecerão aqui -->
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Vinculando o arquivo de lógica JavaScript corrigido -->
+    <script src="script.js"></script>
+</body>
+</html>

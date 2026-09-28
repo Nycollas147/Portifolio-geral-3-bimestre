@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Portfólio Acadêmico</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .login-container h1 {
+            color: #1c2d42;
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .login-container p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #1c2d42;
+            margin-bottom: 6px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #1c2d42;
+        }
+        .btn-acessar {
+            width: 100%;
+            background-color: #1c2d42;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+        .btn-acessar:hover {
+            background-color: #2b435f;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>Portfólio Acadêmico</h1>
+        <p>Acesse o seu painel de evolução</p>
+        
+        <form id="form-login" onsubmit="realizarLogin(event)">
+            <div class="form-group">
+                <label for="usuario-ra">R.A. do Aluno:</label>
+                <input type="text" id="usuario-ra" placeholder="Ex: 1127204804" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="usuario-senha">Senha de Acesso:</label>
+                <input type="password" id="usuario-senha" placeholder="Digite sua senha" required>
+            </div>
+            
+            <button type="submit" class="btn-acessar">Entrar no Sistema</button>
+        </form>
+    </div>
+
+    <script>
+        function realizarLogin(event) {
+            event.preventDefault();
+            
+            const raInput = document.getElementById("usuario-ra").value.trim();
+            const senhaInput = document.getElementById("usuario-senha").value.trim();
+            
+            const raCorreto = "1127204804 SP";
+            const senhaCorreta = "Josue@2026"; 
+            
+            if (raInput === raCorreto && senhaInput === senhaCorreta) {
+                // SALVA A SESSÃO: Diz ao navegador que o Nycollas está logado com sucesso
+                localStorage.setItem('usuario_logado', 'true');
+                window.location.href = "index.html";
+            } else {
+                alert("R.A. ou senha incorretos! Por favor, tente novamente.");
+            }
+        }
+    </script>
+
+</body>
+</html>
